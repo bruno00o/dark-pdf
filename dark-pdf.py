@@ -25,6 +25,8 @@ mat = fitz.Matrix(zoom_x, zoom_y)  # zoom factor 2 in each dimension
 def downloadFile(url):
     file_name = url.split("/")[-1]
     file = requests.get(url, stream=True)
+    if not os.path.exists("./src"):
+        os.mkdir("./src")
     with open("./src/" + file_name, "wb") as f:
         f.write(file.content)
     return f.name
@@ -33,6 +35,8 @@ def downloadFile(url):
 def pdfToImages(pdf):
     glob.glob(pdf)
     doc = fitz.open(pdf)
+    if not os.path.exists("./src/render"):
+        os.mkdir("./src/render")
     for page in doc:
         pix = page.get_pixmap(matrix=mat)
         output = "./src/render/page-%i.png" % page.number
